@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import Login from './components/Login';
 import Dashboard from './components/Dashboard';
@@ -9,7 +8,17 @@ const MOCK_MEETINGS: Meeting[] = [
         id: 'meeting-1',
         title: 'Q3 Project Phoenix Sync',
         date: '2023-10-26',
-        participants: ['Alice', 'Bob', 'Charlie'],
+        participants: [
+            { name: 'Alice', department: 'Engineering' },
+            { name: 'Bob', department: 'Engineering' },
+            { name: 'Charlie', department: 'Engineering' },
+            { name: 'Zoe', department: 'Product' }
+        ],
+        durationMinutes: 30,
+        department: 'Engineering',
+        meetingType: 'Recurring',
+        featuresUsed: ['Recording', 'Captions'],
+        locationType: 'Hybrid',
         transcript: `Alice: Good morning, everyone. Let's kick off the Q3 sync for Project Phoenix. Bob, can you start with the latest on the UI components?
 Bob: Absolutely. We've made fantastic progress. The new design system is fully implemented, and the team is really happy with the improved workflow. We're seeing a 20% reduction in development time.
 Alice: That's excellent news! Really great work, Bob. Charlie, how about the backend integration?
@@ -24,7 +33,16 @@ Charlie: That's good to hear. It helps motivate us to get past this hurdle. Than
         id: 'meeting-2',
         title: 'Marketing Strategy Brainstorm',
         date: '2023-10-24',
-        participants: ['Dana', 'Eve', 'Frank'],
+        participants: [
+            { name: 'Dana', department: 'Marketing' },
+            { name: 'Eve', department: 'Marketing' },
+            { name: 'Frank', department: 'Marketing' }
+        ],
+        durationMinutes: 60,
+        department: 'Marketing',
+        meetingType: 'One-Time',
+        featuresUsed: ['Q&A'],
+        locationType: 'Remote',
         transcript: `Dana: Alright team, let's brainstorm for the new campaign. No bad ideas.
 Eve: I was thinking we could do a viral social media challenge. It could be fun and get a lot of engagement.
 Frank: I'm not sure. That feels a bit risky and off-brand. Our audience is more professional. I think a series of in-depth webinars would be more appropriate and position us as thought leaders.
@@ -39,13 +57,46 @@ Eve: I appreciate that, Frank. I'm excited to see if we can make this work for e
         id: 'meeting-3',
         title: 'All-Hands Update',
         date: '2023-10-22',
-        participants: ['Company-wide'],
+        participants: [
+            { name: 'CEO', department: 'Executive' },
+            { name: 'CFO', department: 'Executive' },
+            { name: 'CTO', department: 'Executive' },
+            { name: 'Alice', department: 'Engineering' },
+            { name: 'Dana', department: 'Marketing' }
+        ],
+        durationMinutes: 25,
+        department: 'Executive',
+        meetingType: 'Recurring',
+        featuresUsed: ['Recording', 'Q&A', 'Captions'],
+        locationType: 'In-Person',
         transcript: `CEO: Welcome everyone to our monthly all-hands. I have some fantastic news to share. We have successfully closed our Series B funding round, securing an additional $50 million!
 (Applause)
 CEO: This is a testament to every single one of you and your hard work. This capital will allow us to accelerate our product roadmap, expand into new markets, and, most importantly, invest in our people.
 CFO: Financially, we are in a very strong position. Our revenue has grown 150% year-over-year, and we are on track to hit our annual targets. We'll be sharing detailed department budgets next week.
 CTO: On the tech front, our platform uptime has been 99.99% for the last quarter. The engineering team has done a phenomenal job scaling our infrastructure to meet the increased demand. We're planning to hire 20 new engineers by the end of the year.
 CEO: It's an exciting time to be here. We are building something special, and I couldn't be prouder of this team. Thank you all. Let's continue to build the future together.`
+    },
+    {
+        id: 'meeting-4',
+        title: 'Sales Pipeline Review',
+        date: '2023-10-28',
+        participants: [
+            { name: 'Grace', department: 'Sales' },
+            { name: 'Heidi', department: 'Sales' },
+            { name: 'Ivan', department: 'Sales' }
+        ],
+        durationMinutes: 45,
+        department: 'Sales',
+        meetingType: 'Recurring',
+        featuresUsed: ['Recording'],
+        locationType: 'Remote',
+        transcript: `Grace: Okay team, let's review the pipeline for this week. Heidi, how's the Acme Corp deal looking?
+Heidi: It's progressing well. We've completed the demo, and they seemed very impressed. The next step is the proposal, which I plan to send by EOD Friday. I'm feeling optimistic about closing this one.
+Grace: Excellent. Ivan, any updates on the Globex account?
+Ivan: It's a tough one. Their legal team is dragging their feet on the contract review. It's slowing everything down. I've followed up twice this week, but I'm not getting much of a response. It's frustrating.
+Grace: I see. Let's not let that one stall. I'll reach out to my contact in their legal department to see if I can help move things along. Keep pushing, Ivan. The effort will pay off.
+Heidi: We also landed three new qualified leads from the webinar last week. The marketing team did a great job on that one.
+Grace: That's fantastic news. Let's make sure we follow up with them promptly. Great work, everyone.`
     }
 ];
 

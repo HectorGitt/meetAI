@@ -1,6 +1,6 @@
 
 import { GoogleGenAI, Type } from "@google/genai";
-import type { SentimentAnalysisResult } from '../types';
+import type { SentimentAnalysisResult, WorkforceAnalysisResult } from '../types';
 
 const ai = new GoogleGenAI({ apiKey: process.env.API_KEY as string });
 
@@ -73,5 +73,70 @@ export const analyzeSentiment = async (transcript: string): Promise<SentimentAna
   } catch (error) {
     console.error("Error analyzing sentiment with Gemini API:", error);
     throw new Error("Failed to analyze sentiment. Please check the console for more details.");
+  }
+};
+
+export const analyzeWorkforce = async (transcript: string, participants: string[]): Promise<WorkforceAnalysisResult> => {
+  const prompt = `
+    Analyze the following meeting transcript to determine speaker contributions for the provided list of participants.
+
+    Your task is to:
+    1. Identify each time a participant from the list speaks.
+    2. Count the number of speaking turns for each participant.
+    3. Count the total number of words spoken by each participant.
+
+    The final output MUST be a valid JSON object that adheres to the provided schema.
+    The keys in the 'speakingTurns' and 'wordCountPerParticipant' objects must be the names of the participants.
+    If a participant from the list does not speak, their value should be 0.
+
+    Participants: ${participants.join(', ')}
+
+    Transcript:
+    ---
+    ${transcript}
+    ---
+  `;
+
+  try {
+    const response = await ai.models.generateContent({
+      model: "gemini-2.5-flash",
+      contents: prompt,
+      config: {
+        responseMimeType: "application/json",
+        responseSchema: {
+          type: Type.OBJECT,
+          properties: {
+            speakingTurns: {
+              type: Type.OBJECT,
+              properties: participants.reduce((acc, name) => ({ ...acc, [name]: { type: Type.INTEGER } }), {})
+            },
+            wordCountPerParticipant: {
+              type: Type.OBJECT,
+              properties: participants.reduce((acc, name) => ({ ...acc, [name]: { type: Type.INTEGER } }), {})
+            }
+          },
+          required: ["speakingTurns", "wordCountPerParticipant"]
+        }
+      }
+    });
+
+    const jsonString = response.text.trim();
+    const result: WorkforceAnalysisResult = JSON.parse(jsonString);
+
+    // Ensure all participants are in the result, even if they didn't speak
+    for (const participant of participants) {
+      if (!(participant in result.speakingTurns)) {
+        result.speakingTurns[participant] = 0;
+      }
+      if (!(participant in result.wordCountPerParticipant)) {
+        result.wordCountPerParticipant[participant] = 0;
+      }
+    }
+
+    return result;
+
+  } catch (error) {
+    console.error("Error analyzing workforce data with Gemini API:", error);
+    throw new Error("Failed to analyze workforce data. Please check the console for more details.");
   }
 };
