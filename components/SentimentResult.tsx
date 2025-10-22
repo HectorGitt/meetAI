@@ -47,8 +47,8 @@ const SentimentResult: React.FC<{ result: SentimentAnalysisResult }> = ({ result
                         outerRadius={80}
                         fill="#8884d8"
                         dataKey="value"
-                        // FIX: Add a null check for the `percent` property to prevent potential type errors.
-                        label={({ name, percent }) => `${name} ${((percent || 0) * 100).toFixed(0)}%`}
+                        // FIX: Explicitly cast the `percent` property to a number before performing an arithmetic operation.
+                        label={({ name, percent }) => `${name} ${(Number(percent || 0) * 100).toFixed(0)}%`}
                     >
                         {chartData.map((entry, index) => (
                             <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />

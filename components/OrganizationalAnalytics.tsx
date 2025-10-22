@@ -28,7 +28,9 @@ const OrganizationalAnalytics: React.FC<{ meetings: Meeting[] }> = ({ meetings }
             return {
                 totalMeetings: 0, totalHours: '0.0', avgDuration: 0,
                 uniqueParticipants: 0, avgParticipants: '0.0', crossDeptPercentage: '0%',
-                loadByDept: [], featureUsage: [], locationTypes: [], participantActivity: []
+                totalWordsSpoken: 0,
+                loadByDept: [], featureUsage: [], locationTypes: [], participantActivity: [],
+                topSpeakers: []
             };
         }
 
@@ -63,6 +65,32 @@ const OrganizationalAnalytics: React.FC<{ meetings: Meeting[] }> = ({ meetings }
             acc[name] = (acc[name] || 0) + 1;
             return acc;
         }, {} as Record<string, number>);
+        
+        const wordCountByParticipant: Record<string, number> = {};
+        const speakerRegex = /^([A-Za-z]+):\s*(.+)/;
+
+        meetings.forEach(meeting => {
+            const lines = meeting.transcript.split('\n');
+            lines.forEach(line => {
+                const match = line.match(speakerRegex);
+                if (match) {
+                    const speaker = match[1];
+                    const dialogue = match[2];
+                    if (dialogue && dialogue.trim() !== '') {
+                        const wordCount = dialogue.trim().split(/\s+/).length;
+                        wordCountByParticipant[speaker] = (wordCountByParticipant[speaker] || 0) + wordCount;
+                    }
+                }
+            });
+        });
+    
+        const totalWordsSpoken = Object.values(wordCountByParticipant).reduce((sum, count) => sum + count, 0);
+    
+        const topSpeakers = Object.entries(wordCountByParticipant)
+            .map(([name, wordCount]) => ({ name, wordCount }))
+            .sort((a, b) => b.wordCount - a.wordCount)
+            .slice(0, 5);
+
 
         return {
             totalMeetings,
@@ -71,6 +99,7 @@ const OrganizationalAnalytics: React.FC<{ meetings: Meeting[] }> = ({ meetings }
             uniqueParticipants,
             avgParticipants,
             crossDeptPercentage,
+            totalWordsSpoken,
             // FIX: Convert `hours` to a number before performing division.
             loadByDept: Object.entries(loadByDept).map(([name, hours]) => ({ name, 'Meeting Hours': parseFloat((Number(hours) / 60).toFixed(1)) })),
             featureUsage: Object.entries(featureUsage).map(([name, value]) => ({ name, value })),
@@ -79,17 +108,19 @@ const OrganizationalAnalytics: React.FC<{ meetings: Meeting[] }> = ({ meetings }
             participantActivity: Object.entries(participantActivity)
                 .map(([name, meetings]) => ({ name, meetings: Number(meetings) }))
                 .sort((a, b) => b.meetings - a.meetings)
-                .slice(0, 5)
+                .slice(0, 5),
+            topSpeakers
         };
     }, [meetings]);
 
     return (
         <div className="space-y-8">
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <KPICard title="Total Meetings" value={analytics.totalMeetings} icon="📅" />
                 <KPICard title="Total Meeting Hours" value={analytics.totalHours} icon="⏱️" />
                 <KPICard title="Avg. Duration" value={`${analytics.avgDuration} min`} icon="📊" />
                 <KPICard title="Unique Participants" value={analytics.uniqueParticipants} icon="👥" />
+                <KPICard title="Total Words Spoken" value={analytics.totalWordsSpoken.toLocaleString()} icon="💬" />
                 <KPICard title="Avg. Participants" value={analytics.avgParticipants} icon="🧑‍🤝‍🧑" />
                 <KPICard title="Cross-Dept Collab" value={analytics.crossDeptPercentage} icon="🤝" />
             </div>
@@ -125,6 +156,23 @@ const OrganizationalAnalytics: React.FC<{ meetings: Meeting[] }> = ({ meetings }
                      </ResponsiveContainer>
                  </ChartCard>
 
+                <ChartCard title="Top Speakers by Word Count">
+                    <ResponsiveContainer width="100%" height="100%">
+                         <BarChart data={analytics.topSpeakers} layout="vertical" margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
+                             <CartesianGrid strokeDasharray="3 3" />
+                             <XAxis type="number" />
+                             <YAxis dataKey="name" type="category" width={80} />
+                             <Tooltip formatter={(value: number) => value.toLocaleString()} />
+                             <Legend />
+                             <Bar dataKey="wordCount" name="Words Spoken" fill="#ffc658">
+                                {analytics.topSpeakers.map((entry, index) => (
+                                    <Cell key={`cell-${index}`} fill={COLORS[(index + 2) % COLORS.length]} />
+                                ))}
+                             </Bar>
+                         </BarChart>
+                     </ResponsiveContainer>
+                 </ChartCard>
+
                  <ChartCard title="Feature Adoption">
                     <ResponsiveContainer width="100%" height="100%">
                         <PieChart>
@@ -135,8 +183,8 @@ const OrganizationalAnalytics: React.FC<{ meetings: Meeting[] }> = ({ meetings }
                                 cx="50%"
                                 cy="50%"
                                 outerRadius={100}
-                                // FIX: Add a null check for the `percent` property to prevent potential type errors.
-                                label={({ name, percent }) => `${name} ${((percent || 0) * 100).toFixed(0)}%`}
+                                // FIX: Explicitly cast the `percent` property to a number before performing an arithmetic operation.
+                                label={({ name, percent }) => `${name} ${(Number(percent || 0) * 100).toFixed(0)}%`}
                             >
                                 {analytics.featureUsage.map((entry, index) => (
                                     <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
