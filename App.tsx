@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 import Login from './components/Login';
-import Dashboard from './components/Dashboard';
-import type { Meeting } from './types';
+import Layout from './components/Layout';
+import DashboardPage from './pages/DashboardPage';
+import MeetingsPage from './pages/MeetingsPage';
+import SettingsPage from './pages/SettingsPage';
+import type { Meeting, User } from './types';
 
 const MOCK_MEETINGS: Meeting[] = [
     {
@@ -100,25 +103,47 @@ Grace: That's fantastic news. Let's make sure we follow up with them promptly. G
     }
 ];
 
-const App: React.FC = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+export type Page = 'dashboard' | 'meetings' | 'settings';
 
-  const handleLogin = () => {
-    setIsLoggedIn(true);
+const App: React.FC = () => {
+  const [user, setUser] = useState<User | null>(null);
+  const [currentPage, setCurrentPage] = useState<Page>('dashboard');
+
+  const handleLogin = (username: string) => {
+    setUser({ username, email: `${username.toLowerCase()}@example.com` });
+    setCurrentPage('dashboard');
   };
 
   const handleLogout = () => {
-    setIsLoggedIn(false);
+    setUser(null);
   };
 
+  const renderPage = () => {
+    switch (currentPage) {
+      case 'dashboard':
+        return <DashboardPage meetings={MOCK_MEETINGS} />;
+      case 'meetings':
+        return <MeetingsPage meetings={MOCK_MEETINGS} />;
+      case 'settings':
+        return <SettingsPage user={user!} />;
+      default:
+        return <DashboardPage meetings={MOCK_MEETINGS} />;
+    }
+  };
+
+  if (!user) {
+    return <Login onLoginSuccess={handleLogin} />;
+  }
+  
   return (
-    <>
-      {isLoggedIn ? (
-        <Dashboard meetings={MOCK_MEETINGS} onLogout={handleLogout} />
-      ) : (
-        <Login onLoginSuccess={handleLogin} />
-      )}
-    </>
+    <Layout
+        user={user}
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
+        onLogout={handleLogout}
+    >
+        {renderPage()}
+    </Layout>
   );
 };
 

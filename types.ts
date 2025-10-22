@@ -38,3 +38,8 @@ export interface WorkforceAnalysisResult {
   speakingTurns: Record<string, number>;
   wordCountPerParticipant: Record<string, number>;
 }
+
+export interface User {
+    username: string;
+    email: string;
+}

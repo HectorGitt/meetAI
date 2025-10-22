@@ -135,7 +135,8 @@ const OrganizationalAnalytics: React.FC<{ meetings: Meeting[] }> = ({ meetings }
                                 cx="50%"
                                 cy="50%"
                                 outerRadius={100}
-                                label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                                // FIX: Add a null check for the `percent` property to prevent potential type errors.
+                                label={({ name, percent }) => `${name} ${((percent || 0) * 100).toFixed(0)}%`}
                             >
                                 {analytics.featureUsage.map((entry, index) => (
                                     <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
