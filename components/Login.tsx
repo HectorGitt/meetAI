@@ -76,10 +76,6 @@ const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
             </button>
           </div>
         </form>
-
-        <div className="p-4 mt-6 text-sm text-yellow-800 bg-yellow-100 rounded-lg dark:bg-yellow-900 dark:text-yellow-300" role="alert">
-          <span className="font-medium">Demonstration Note:</span> Any username and password will work. This is a frontend-only mock application to demonstrate features.
-        </div>
       </div>
     </div>
   );

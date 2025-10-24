@@ -1,6 +1,7 @@
+
 import React, { useMemo } from 'react';
 import type { Meeting } from '../types';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 
 const KPICard: React.FC<{ title: string; value: string | number; icon: string }> = ({ title, value, icon }) => (
     <div className="flex flex-col items-center justify-center p-6 bg-white dark:bg-gray-800 rounded-lg shadow-md text-center h-full">
@@ -100,11 +101,11 @@ const OrganizationalAnalytics: React.FC<{ meetings: Meeting[] }> = ({ meetings }
             avgParticipants,
             crossDeptPercentage,
             totalWordsSpoken,
-            // FIX: Convert `hours` to a number before performing division.
+            // Fix: Explicitly convert `hours` to a number before performing division, as it could be inferred as `unknown`.
             loadByDept: Object.entries(loadByDept).map(([name, hours]) => ({ name, 'Meeting Hours': parseFloat((Number(hours) / 60).toFixed(1)) })),
             featureUsage: Object.entries(featureUsage).map(([name, value]) => ({ name, value })),
             locationTypes: Object.entries(locationTypes).map(([name, value]) => ({ name, value })),
-            // FIX: Convert `meetings` to a number to ensure correct sorting.
+            // Fix: Explicitly convert `meetings` to a number to ensure correct sorting, as it could be inferred as `unknown`.
             participantActivity: Object.entries(participantActivity)
                 .map(([name, meetings]) => ({ name, meetings: Number(meetings) }))
                 .sort((a, b) => b.meetings - a.meetings)
@@ -129,7 +130,6 @@ const OrganizationalAnalytics: React.FC<{ meetings: Meeting[] }> = ({ meetings }
                  <ChartCard title="Meeting Load by Department (Hours)">
                      <ResponsiveContainer width="100%" height="100%">
                          <BarChart data={analytics.loadByDept} margin={{ top: 5, right: 20, left: 10, bottom: 5 }}>
-                             <CartesianGrid strokeDasharray="3 3" />
                              <XAxis dataKey="name" />
                              <YAxis unit="h"/>
                              <Tooltip formatter={(value) => `${value} hours`} />
@@ -142,7 +142,6 @@ const OrganizationalAnalytics: React.FC<{ meetings: Meeting[] }> = ({ meetings }
                  <ChartCard title="Most Active Participants (by Meetings Attended)">
                     <ResponsiveContainer width="100%" height="100%">
                          <BarChart data={analytics.participantActivity} margin={{ top: 5, right: 20, left: 10, bottom: 5 }}>
-                             <CartesianGrid strokeDasharray="3 3" />
                              <XAxis dataKey="name" />
                              <YAxis allowDecimals={false} />
                              <Tooltip />
@@ -159,7 +158,6 @@ const OrganizationalAnalytics: React.FC<{ meetings: Meeting[] }> = ({ meetings }
                 <ChartCard title="Top Speakers by Word Count">
                     <ResponsiveContainer width="100%" height="100%">
                          <BarChart data={analytics.topSpeakers} layout="vertical" margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
-                             <CartesianGrid strokeDasharray="3 3" />
                              <XAxis type="number" />
                              <YAxis dataKey="name" type="category" width={80} />
                              <Tooltip formatter={(value: number) => value.toLocaleString()} />
@@ -183,7 +181,7 @@ const OrganizationalAnalytics: React.FC<{ meetings: Meeting[] }> = ({ meetings }
                                 cx="50%"
                                 cy="50%"
                                 outerRadius={100}
-                                // FIX: Explicitly cast the `percent` property to a number before performing an arithmetic operation.
+                                // Fix: The `percent` property from recharts can be undefined. Cast to number to perform arithmetic.
                                 label={({ name, percent }) => `${name} ${(Number(percent || 0) * 100).toFixed(0)}%`}
                             >
                                 {analytics.featureUsage.map((entry, index) => (

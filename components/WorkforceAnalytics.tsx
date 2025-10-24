@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Cell } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer, Cell } from 'recharts';
 import type { WorkforceAnalysisResult, Meeting } from '../types';
 
 const COLORS = ['#8884d8', '#82ca9d', '#ffc658', '#ff8042', '#0088FE', '#00C49F', '#FFBB28'];
@@ -15,12 +15,12 @@ const InfoCard: React.FC<{ title: string; value: string | number; icon: string }
 
 
 const WorkforceAnalytics: React.FC<{ result: WorkforceAnalysisResult; meeting: Meeting }> = ({ result, meeting }) => {
-  // FIX: Operator '+' cannot be applied to types 'unknown' and 'number'.
-  // Explicitly convert `count` to a number to avoid type errors with the reduce operation.
+  // Fix: Operator '+' cannot be applied to types 'unknown' and 'number'.
+  // Explicitly convert `count` to a number because Object.values can return `unknown[]`.
   const totalWords = Object.values(result.wordCountPerParticipant).reduce((sum, count) => sum + Number(count), 0);
 
   const chartData = Object.entries(result.wordCountPerParticipant)
-    // FIX: Operator '>' cannot be applied and The right-hand side of an arithmetic operation must be of type 'any', 'number'...
+    // Fix: Operator '>' cannot be applied and the right-hand side of an arithmetic operation must be of type 'any', 'number'...
     // Explicitly convert `wordCountValue` to a number. This resolves type errors
     // for the percentage calculation and for the subsequent sort operation.
     .map(([name, wordCountValue]) => {
@@ -48,7 +48,6 @@ const WorkforceAnalytics: React.FC<{ result: WorkforceAnalysisResult; meeting: M
         <div className="w-full h-80">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={chartData} layout="vertical" margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
-              <CartesianGrid strokeDasharray="3 3" />
               <XAxis type="number" unit="%" domain={[0, 100]} />
               <YAxis dataKey="name" type="category" width={80} />
               <Tooltip formatter={(value: number) => `${value.toFixed(1)}%`} cursor={{fill: 'rgba(206, 206, 206, 0.2)'}}/>

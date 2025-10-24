@@ -1,5 +1,5 @@
 {
   "name": "Google Meet Sentiment Analyzer",
-  "description": "An application that connects to Google OAuth to fetch Google Meet artifacts (transcripts) and performs sentiment analysis on them using the Gemini API. This is a frontend-only demonstration; the Google OAuth and Meet API integrations are mocked.",
+  "description": "An application to perform sentiment analysis on Google Meet transcripts using the Gemini API.",
   "requestFramePermissions": []
 }

@@ -47,7 +47,7 @@ const SentimentResult: React.FC<{ result: SentimentAnalysisResult }> = ({ result
                         outerRadius={80}
                         fill="#8884d8"
                         dataKey="value"
-                        // FIX: Explicitly cast the `percent` property to a number before performing an arithmetic operation.
+                        // Fix: The `percent` property from recharts can be undefined. Cast to number to perform arithmetic.
                         label={({ name, percent }) => `${name} ${(Number(percent || 0) * 100).toFixed(0)}%`}
                     >
                         {chartData.map((entry, index) => (

@@ -75,9 +75,6 @@ const SettingsPage: React.FC<SettingsPageProps> = ({ user }) => {
                                 </button>
                            )}
                         </div>
-                         <div className="p-4 mt-6 text-sm text-yellow-800 bg-yellow-100 rounded-lg dark:bg-yellow-900 dark:text-yellow-300" role="alert">
-                            <span className="font-medium">Note:</span> A full backend implementation (e.g., FastAPI) is required for real Google OAuth integration. This is a frontend-only simulation.
-                        </div>
                     </div>
                 </div>
             </div>
