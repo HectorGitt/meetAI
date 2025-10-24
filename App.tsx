@@ -100,6 +100,95 @@ Ivan: It's a tough one. Their legal team is dragging their feet on the contract 
 Grace: I see. Let's not let that one stall. I'll reach out to my contact in their legal department to see if I can help move things along. Keep pushing, Ivan. The effort will pay off.
 Heidi: We also landed three new qualified leads from the webinar last week. The marketing team did a great job on that one.
 Grace: That's fantastic news. Let's make sure we follow up with them promptly. Great work, everyone.`
+    },
+    {
+        id: 'meeting-5',
+        title: 'Product Roadmap Planning Q4',
+        date: '2023-11-02',
+        participants: [
+            { name: 'Zoe', department: 'Product' },
+            { name: 'Alice', department: 'Engineering' },
+            { name: 'Dana', department: 'Marketing' }
+        ],
+        durationMinutes: 75,
+        department: 'Product',
+        meetingType: 'One-Time',
+        featuresUsed: ['Q&A'],
+        locationType: 'Hybrid',
+        transcript: `Zoe: Thanks for joining, everyone. The goal for today is to finalize the key themes for our Q4 roadmap. Top of the list is the new analytics dashboard.
+Alice: From an engineering perspective, the dashboard is a heavy lift. We'll need to dedicate the entire Phoenix team to it if we want it done by end of quarter. That means other feature requests will have to wait.
+Dana: The dashboard is a huge selling point for us. The marketing team can build a whole campaign around it. What other features would be delayed?
+Alice: The requested API improvements and the mobile optimization pass would likely slip to Q1.
+Zoe: That's a tough trade-off. The API improvements are critical for our power users. Can we scope down the dashboard's V1 to something more manageable?
+Alice: Perhaps. If we launch with just the core widgets and save the advanced customization for later, we might be able to squeeze in the API work. But it will be tight.
+Dana: I think that's a good compromise. Launching with a solid V1 of the dashboard is better than delaying it entirely. We can market it as 'new and improved analytics, with more to come!'
+Zoe: Okay, let's go with that. Alice, can you get me a revised estimate for the scoped-down dashboard? I'll update the roadmap. Great discussion, team.`
+    },
+    {
+        id: 'meeting-6',
+        title: 'Weekly Design Crit',
+        date: '2023-11-05',
+        participants: [
+            { name: 'Bob', department: 'Engineering' },
+            { name: 'Leo', department: 'Engineering' },
+            { name: 'Mia', department: 'Engineering' }
+        ],
+        durationMinutes: 45,
+        department: 'Engineering',
+        meetingType: 'Recurring',
+        featuresUsed: ['Recording'],
+        locationType: 'Remote',
+        transcript: `Bob: Alright, Leo, you're up first. Show us what you've got for the new user onboarding flow.
+Leo: Sure thing. Here are the mockups. I tried to simplify the steps and add more visual cues based on our last discussion.
+Mia: I really like this. The progress bar at the top is a great addition. It feels much less daunting. Have you considered what it looks like on mobile?
+Leo: Good question. I have some mobile-specific mockups here. The layout stacks vertically, and the text is a bit larger for readability.
+Bob: This is really solid work, Leo. The flow is intuitive, and it looks clean. My only suggestion would be to maybe make the 'skip for now' button a bit more prominent. Some users might feel forced to complete everything.
+Mia: I agree with Bob. A secondary button style might work well there.
+Leo: That's great feedback, thanks! I'll make that tweak and send out the updated designs this afternoon.`
+    },
+    {
+        id: 'meeting-7',
+        title: 'Executive Offsite Debrief',
+        date: '2023-11-08',
+        participants: [
+            { name: 'CEO', department: 'Executive' },
+            { name: 'CFO', department: 'Executive' },
+            { name: 'CTO', department: 'Executive' }
+        ],
+        durationMinutes: 90,
+        department: 'Executive',
+        meetingType: 'One-Time',
+        featuresUsed: ['Recording', 'Captions'],
+        locationType: 'In-Person',
+        transcript: `CEO: Let's debrief on the offsite. The primary topic was our international expansion strategy. After reviewing the data, it's clear that Europe presents the biggest opportunity, but also the biggest challenge.
+CFO: The financial models support this. The initial investment will be significant, particularly in hiring and localization. We'll need to re-allocate budget from some Q1 initiatives. This will not be a popular decision.
+CTO: From a technical standpoint, data residency is our main hurdle. We'll need to set up EU-based data centers, which is a massive project. We can't simply use our existing infrastructure.
+CEO: I understand the challenges, but delaying is not an option. The market is ripe, and our competitors are already making moves. We need to be bold. I'm making the call: we are officially greenlighting Project Europa.
+CFO: Understood. I will begin adjusting the Q1 budgets. Department heads will need to be notified by the end of the week. Expect some pushback.
+CTO: My team will start architecting the new infrastructure immediately. This will have a major impact on our current roadmap. We'll need to de-prioritize some planned platform work.
+CEO: I'm aware of the sacrifices. This is a company-wide strategic pivot. It will be difficult, but it's necessary for our long-term growth. Let's prepare the internal announcement.`
+    },
+    {
+        id: 'meeting-8',
+        title: 'Customer Feedback Review (Sales & Product)',
+        date: '2023-11-10',
+        participants: [
+            { name: 'Grace', department: 'Sales' },
+            { name: 'Zoe', department: 'Product' },
+            { name: 'Ivan', department: 'Sales' }
+        ],
+        durationMinutes: 60,
+        department: 'Sales',
+        meetingType: 'Recurring',
+        featuresUsed: ['Captions', 'Q&A'],
+        locationType: 'Remote',
+        transcript: `Grace: Welcome, Zoe. Thanks for joining our weekly feedback session. Ivan, why don't you start with the feedback from Globex?
+Ivan: They're a big fan of the platform overall, but they are consistently asking for better reporting tools. They want to be able to create custom dashboards and export raw data. It's a deal-breaker for their renewal.
+Zoe: This is helpful, Ivan. We've heard similar feedback from other enterprise clients. Better reporting is actually the main driver for the new analytics dashboard we're planning for Q4.
+Grace: That's great to hear. Knowing that's on the roadmap gives us something concrete to take back to them. Can you share any mockups or a timeline?
+Zoe: It's still in early design, but I can share the project brief with you. We're targeting an end-of-Q4 release for the first version.
+Ivan: Perfect. That will help a lot. Another common request is for more granular user permissions. Admins want more control over who can see what.
+Zoe: Yep, that's on our radar too. It's a slightly lower priority than the dashboard, but we're hoping to tackle it in Q1 of next year. Keep the feedback coming, this is incredibly valuable for us to prioritize effectively.`
     }
 ];
 

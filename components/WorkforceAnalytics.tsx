@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Cell } from 'recharts';
 import type { WorkforceAnalysisResult, Meeting } from '../types';
@@ -14,11 +15,13 @@ const InfoCard: React.FC<{ title: string; value: string | number; icon: string }
 
 
 const WorkforceAnalytics: React.FC<{ result: WorkforceAnalysisResult; meeting: Meeting }> = ({ result, meeting }) => {
-  // FIX: Explicitly convert `count` to a number to avoid type errors with the reduce operation.
+  // FIX: Operator '+' cannot be applied to types 'unknown' and 'number'.
+  // Explicitly convert `count` to a number to avoid type errors with the reduce operation.
   const totalWords = Object.values(result.wordCountPerParticipant).reduce((sum, count) => sum + Number(count), 0);
 
   const chartData = Object.entries(result.wordCountPerParticipant)
-    // FIX: Explicitly convert `wordCountValue` to a number. This resolves type errors
+    // FIX: Operator '>' cannot be applied and The right-hand side of an arithmetic operation must be of type 'any', 'number'...
+    // Explicitly convert `wordCountValue` to a number. This resolves type errors
     // for the percentage calculation and for the subsequent sort operation.
     .map(([name, wordCountValue]) => {
       const wordCount = Number(wordCountValue);
